@@ -15,12 +15,11 @@ const images = {
 };
 
 const colorStyles = {
-  purple: "border-[#816BFF] bg-[#816BFF]",
-  cyan: "border-[#1FCEC9] bg-[#1FCEC9]",
-  blue: "border-[#4B97D3] bg-[#4B97D3]",
-  black: "border-[#3B4747] bg-[#3B4747]",
+  purple: "#816BFF",
+  cyan: "#1FCEC9",
+  blue: "#4B97D3",
+  black: "#3B4747",
 };
-
 function App() {
   const [selectedColor, setSelectedColor] = useState("purple");
   const [selectedSize, setSelectedSize] = useState("S");
@@ -31,7 +30,7 @@ function App() {
   // Function to change thumbnail
 
   const changeThumbnail = (color) => {
-    setSelectedColor(color);
+    setSelectedColor(color); // Set the active color
   };
 
   // Function to add item to the cart
@@ -151,13 +150,19 @@ function App() {
                   <div
                     key={color}
                     onClick={() => changeThumbnail(color)}
-                    className={`w-6 h-6 rounded-full cursor-pointer flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-full cursor-pointer flex items-center justify-center ${
                       selectedColor === color
-                        ? `border-2 border-[${colorStyles[color]}] bg-[${colorStyles[color]}]`
+                        ? `border-2 border-[${colorStyles[color]}]`
                         : `bg-[${colorStyles[color]}]`
                     }`}
                   >
-                    <button className="w-4 h-4 rounded-full"></button>
+                    <button
+                      className={`w-3 h-3 rounded-full ${
+                        selectedColor === color
+                          ? `bg-[${colorStyles[color]}]`
+                          : ``
+                      }`}
+                    ></button>
                   </div>
                 ))}
               </div>
@@ -166,15 +171,15 @@ function App() {
             {/* Wrist Size */}
             <div className="mb-4">
               <p className="font-bold text-[#364A63] text-lg">Wrist Size</p>
-              <div className="flex gap-3">
-                {["S", "M", "L", "XL"].map((size) => (
+              <div className="flex gap-3 mt-[10px]">
+                {["S $69", "M $79", "L $89", "XL $99"].map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`border px-4 py-2 rounded ${
+                    className={`border px-5 py-2 rounded font-bold ${
                       size === selectedSize
                         ? "border-[#816BFF] text-[#816BFF]"
-                        : "border-gray-300 text-gray-500"
+                        : "border-gray-300 text-[#8091A7]"
                     }`}
                   >
                     {size}
