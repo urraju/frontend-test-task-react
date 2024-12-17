@@ -7,11 +7,14 @@ import cyan from "./assets/cyan.png";
 import star__1 from "./assets/review/star-1.png";
 import star__2 from "./assets/review/star-2.png";
 import star__3 from "./assets/review/star-3.png";
+import Modal from "./components/Modal";
+import toast from "react-hot-toast";
+
 const images = {
-  purple: purple,
-  black: black,
-  blue: blue,
-  cyan: cyan,
+  purple,
+  cyan,
+  blue,
+  black,
 };
 
 const colorStyles = {
@@ -46,7 +49,7 @@ function App() {
     };
     setCart([...cart, newItem]);
     setQuantity(1);
-    console.log(quantity);
+    toast.success("Add to card succussfully");
   };
 
   // Function to update quantity
@@ -56,7 +59,7 @@ function App() {
 
   const addToWishlist = () => {
     console.log("Added to Wishlist");
-    alert("Item added to your Wishlist!");
+    toast.success("Item added to your Wishlist!");
   };
 
   // Total price and quantity
@@ -79,21 +82,21 @@ function App() {
   };
 
   return (
-    <div className="h-screen bg-white">
+    <div className="h-screen p-2 bg-white md:p-0">
       {/* Product Section */}
       <div className="container py-10 mx-auto">
-        <div className="container flex items-center max-h-[720px] justify-center ">
+        <div className="container flex items-center flex-col lg:flex-row max-h-[720px] justify-center md:gap-10   ">
           {/* Thumbnail */}
-          <div className="flex-1">
+          <div className="lg:flex-1">
             <img
               src={images[selectedColor]}
               alt="Product Thumbnail"
-              className="w-[630px] h-[731px] rounded"
+              className="lg:w-[630px] w-full md:h-[731px] h-auto rounded"
             />
           </div>
 
           {/* Product Details */}
-          <div className="flex-1">
+          <div className="lg:flex-1">
             <h1 className="text-[40px] font-bold text-[#364A63] mb-3">
               Classy Modern Smart Watch
             </h1>
@@ -150,18 +153,19 @@ function App() {
                   <div
                     key={color}
                     onClick={() => changeThumbnail(color)}
-                    className={`w-5 h-5 rounded-full cursor-pointer flex items-center justify-center ${
-                      selectedColor === color
-                        ? `border-2 border-[${colorStyles[color]}]`
-                        : `bg-[${colorStyles[color]}]`
-                    }`}
+                    className={`w-6 h-6 rounded-full cursor-pointer flex items-center justify-center`}
+                    style={{
+                      border:
+                        selectedColor === color
+                          ? `2px solid ${colorStyles[color]} `
+                          : "none",
+                    }}
                   >
                     <button
-                      className={`w-3 h-3 rounded-full ${
-                        selectedColor === color
-                          ? `bg-[${colorStyles[color]}]`
-                          : ``
-                      }`}
+                      className="w-4 h-4 rounded-full"
+                      style={{
+                        backgroundColor: colorStyles[color],
+                      }}
                     ></button>
                   </div>
                 ))}
@@ -247,101 +251,15 @@ function App() {
         </div>
       )}
       {/* modal  */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-11/12 max-w-3xl p-6 bg-white rounded-lg shadow-lg">
-            {/* Modal Header */}
-            <h2 className="text-[22px] font-bold mb-4 text-[#364A63]">
-              Your Cart
-            </h2>
-
-            {/* Table Structure */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b">
-                    <th className="p-2 font-normal text-[#8091A7]">Item</th>
-                    <th className="p-2 font-normal text-[#8091A7]">Color</th>
-                    <th className="p-2 font-normal text-[#8091A7]">Size</th>
-                    <th className="p-2 font-normal text-[#8091A7] text-center">
-                      Qnt
-                    </th>
-                    <th className="p-2 font-normal text-[#8091A7] text-right">
-                      Price
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cart.map((item, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="flex items-center p-2 space-x-2">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-10 h-10 rounded"
-                        />
-                        <span className="text-gray-700">{item.name}</span>
-                      </td>
-                      <td className="p-2 text-gray-600 capitalize">
-                        {item.color}
-                      </td>
-                      <td className="p-2 font-semibold text-gray-700">
-                        {item.size}
-                      </td>
-                      <td className="p-2 text-center text-gray-700">
-                        {item.quantity}
-                      </td>
-                      <td className="p-2 font-semibold text-right text-gray-800">
-                        ${item.price.toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Total Section */}
-            <div className="flex items-center justify-between pt-6">
-              <p className="text-[18px] font-bold">Total</p>
-              <div className="flex items-center gap-10">
-                <p className="text-lg font-semibold">
-                  <span className="text-gray-800">{totalQuantity}</span>
-                </p>
-                <p className="text-lg font-semibold">
-                  <span className="text-gray-800">
-                    ${totalPrice.toFixed(2)}
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center justify-end mt-6 space-x-4">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 text-gray-600 border border-gray-400 rounded hover:bg-gray-100"
-              >
-                Continue Shopping
-              </button>
-              <button className="bg-[#816BFF] text-white px-4 py-2 rounded hover:bg-[#6e5cd7]">
-                Checkout
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        showModal={showModal}
+        totalQuantity={totalQuantity}
+        setShowModal={setShowModal}
+        totalPrice={totalPrice}
+        cart={cart}
+      />
     </div>
   );
-}
-
-function getColorCode(color) {
-  const colorMap = {
-    purple: "#816BFF",
-    black: "#3B4747",
-    blue: "#4B97D3",
-    cyan: "#1FCEC9",
-  };
-  return colorMap[color];
 }
 
 export default App;
